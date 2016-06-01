@@ -1,0 +1,57 @@
+{% extends "evaluationApp/base.html" %}
+{% block title %}evaluationApp{% endblock %}
+{% block body %}
+<div class="page-header">
+  <h1>Evaluation App</h1>
+</div>
+{# 画面上段 - 入力フォームを定義する #}
+<form action="{% url 'evaluationApp:index' %}" method="post">
+  <div class="row">
+    
+    {% for field in form %}{# formに入っているデータ分ラベルとテキストフォームを表示 #}
+    <div class="form-group">
+      {% if field.errors %}
+      <div class="col-sm-10">
+	<span class="col-sm-10">{{ field.errors }}</span>
+      </div>
+      {% endif %}
+      <div class="col-sm-10">
+	<label class="col-sm-3 control-label">{{ field.label_tag }}</label>
+	<label class="label col-sm-7"><input color:black>{{ field }}</label>
+      </div>
+    </div>
+    {% endfor %}
+    
+    <div class="col-sm-10">{# Submitボタン #}
+      <div class="form-group">
+	<label class="col-sm-2 control-label"><input type="submit" class="btn btn-primary" value="Submit"></label>
+	{% csrf_token %}
+      </div>
+    </div>
+    
+  </div>
+</form>
+
+<hr>
+
+{% include "pagination.html" %}{# ページネーター用のパーツ #}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      {% for evaluation201606 in page %}
+      <div class="panel panel-primary">
+	<div class="panel-heading">
+	  <h3 class="panel-title">{{ evaluation201606.name }} <label class="small">:{{ evaluation201606.date }}</label></h3>
+	</div>
+	<div class="panel-body">
+	  <p>rate:{{ evaluation201606.rate }}</p>
+	  <p>time:{{ evaluation201606.time }}</p>
+	</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% include "pagination.html" %}{# ぺージネーター用のパーツ #}
+
+{% endblock %}
